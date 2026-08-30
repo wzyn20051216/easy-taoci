@@ -21,11 +21,12 @@ class NetEaseTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             state = Path(temp_dir) / "state.jsonl"
             append_state(state, "a" * 24, "failed", "RuntimeError")
-            append_state(state, "b" * 24, "saved")
+            append_state(state, "b" * 24, "saved", provider="netease")
             self.assertEqual({"b" * 24}, saved_task_ids(state))
             text = state.read_text(encoding="utf-8")
             self.assertNotIn("recipient", text)
             self.assertNotIn("body", text)
+            self.assertIn("netease", text)
 
     def test_missing_attachment_blocks_before_browser(self) -> None:
         records = [{

@@ -16,6 +16,14 @@ HEADERS = [
     "邮箱", "所属团队", "草稿状态", "来源URL", "匹配分", "任务ID", "更新时间",
 ]
 
+PROVIDER_LABELS = {
+    "netease": "网易",
+    "163": "网易",
+    "qq": "QQ邮箱",
+    "gmail": "Gmail",
+    "outlook": "Outlook",
+}
+
 
 def _load_openpyxl():
     """延迟加载可选依赖，保持基础安装轻量。"""
@@ -55,7 +63,24 @@ def _copy_style(ws: Any, row: int) -> None:
         target.number_format = source.number_format
 
 
-def _upsert(ws: Any, draft: dict[str, Any], saved: bool, now: str) -> None:
+def _draft_status(saved: bool, provider: str) -> str:
+    """根据状态文件里的 provider 生成可读草稿状态。"""
+    if not saved:
+        return "已生成草稿"
+    label = PROVIDER_LABELS.get(provider.lower(), "邮箱")
+    return f"已存{label}草稿"
+
+
+def _provider_from_state_path(state_path: Path) -> str:
+    """从历史状态文件名推断 provider，兼容旧版无 provider 记录。"""
+    name = state_path.name.lower()
+    for provider in PROVIDER_LABELS:
+        if provider in name:
+            return provider
+    return ""
+
+
+def _upsert(ws: Any, draft: dict[str, Any], saved: bool, provider: str, now: str) -> None:
     """按任务 ID 优先、学校姓名邮箱次优的方式更新一位导师。"""
     columns = _headers(ws)
     teacher = draft["teacher"]
@@ -86,7 +111,7 @@ def _upsert(ws: Any, draft: dict[str, Any], saved: bool, now: str) -> None:
         "是否已发送": "是" if sent_value == "是" else "否",
         "是否收到回复": str(ws.cell(row=target_row, column=columns["是否收到回复"]).value or "否"),
         "邮箱": draft["recipient"],
-        "草稿状态": "已存网易草稿" if saved else "已生成草稿",
+        "草稿状态": _draft_status(saved, provider),
         "来源URL": teacher.get("faculty_url", ""),
         "匹配分": teacher.get("match_score", ""),
         "任务ID": draft["task_id"],
@@ -107,7 +132,12 @@ def sync_workbook(workbook_path: Path, drafts_path: Path, state_path: Path) -> P
 
     drafts = read_jsonl(drafts_path)
     states = read_jsonl(state_path) if state_path.is_file() else []
-    saved_ids = {str(item.get("task_id")) for item in states if item.get("status") == "saved"}
+    fallback_provider = _provider_from_state_path(state_path)
+    saved_providers = {
+        str(item.get("task_id")): str(item.get("provider") or fallback_provider)
+        for item in states
+        if item.get("status") == "saved"
+    }
     workbook = openpyxl.load_workbook(workbook_path)
     if "全部汇总" not in workbook.sheetnames:
         workbook.create_sheet("全部汇总", 0)
@@ -117,9 +147,10 @@ def sync_workbook(workbook_path: Path, drafts_path: Path, state_path: Path) -> P
         school = str(draft["teacher"]["university"])
         if school not in workbook.sheetnames:
             workbook.create_sheet(school)
-        saved = draft["task_id"] in saved_ids
-        _upsert(workbook["全部汇总"], draft, saved, now)
-        _upsert(workbook[school], draft, saved, now)
+        saved = draft["task_id"] in saved_providers
+        provider = saved_providers.get(draft["task_id"], "")
+        _upsert(workbook["全部汇总"], draft, saved, provider, now)
+        _upsert(workbook[school], draft, saved, provider, now)
 
     workbook.save(workbook_path)
     return backup

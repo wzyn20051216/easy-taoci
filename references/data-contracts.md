@@ -75,7 +75,7 @@
 每行记录一次结果：
 
 ```json
-{"task_id":"...","status":"saved","timestamp":"..."}
+{"task_id":"...","status":"saved","timestamp":"...","provider":"netease"}
 ```
 
-允许状态：`saved`、`failed`。失败记录可包含简短 `error_type`，不写正文、收件人和本地路径。
+允许状态：`saved`、`failed`。`provider` 建议使用 `netease`、`qq`、`gmail`、`outlook` 等适配器名。失败记录可包含简短 `error_type`，不写正文、收件人和本地路径。

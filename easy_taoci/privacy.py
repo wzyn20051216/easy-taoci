@@ -29,7 +29,7 @@ PATTERNS = {
     "中国手机号": re.compile(r"(?<!\d)1[3-9]\d{9}(?!\d)"),
     "疑似身份证号": re.compile(r"(?<!\d)\d{17}[0-9Xx](?!\d)"),
     "用户目录绝对路径": re.compile(r"(?:[A-Za-z]:\\Users\\[^\\\s]+\\|/(?:Users|home)/[^/\s]+/)"),
-    "网易会话参数": re.compile(r"(?:[?&#]|\b)sid=[A-Za-z0-9_-]{8,}", re.IGNORECASE),
+    "邮箱会话参数": re.compile(r"(?:[?&#]|\b)(?:sid|authuser|login_hint)=[A-Z0-9._%+-]{1,}", re.IGNORECASE),
     "疑似凭据赋值": re.compile(r"\b(?:password|passwd|cookie|access[_-]?token|api[_-]?key)\s*[:=]\s*['\"]?[^\s'\"]{8,}", re.IGNORECASE),
 }
 

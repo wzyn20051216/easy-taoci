@@ -1,6 +1,6 @@
 # Easy Taoci
 
-一个面向中文保研、推免、考研联系导师场景的开源 Codex/Agent Skill。它把导师官网检索、证据化匹配、套磁信定制、网易邮箱草稿保存和导师追踪表同步组合成一条可复核、可断点续跑的流水线。
+一个面向中文保研、推免、考研联系导师场景的开源 Codex/Agent Skill。它把导师官网检索、证据化匹配、套磁信定制、多邮箱草稿保存和导师追踪表同步组合成一条可复核、可断点续跑的流水线。
 
 项目坚持两件事：不靠编造提高“匹配度”，不让个人资料进入开源仓库。
 
@@ -9,7 +9,7 @@
 - 从学院官网、教师主页和近期招生页建立候选池。
 - 用学生经历标签、招生证据和来源质量对候选进行透明排序。
 - 基于本地模板批量生成克制、具体、可追溯的个性化邮件。
-- 连接用户自行登录的 Microsoft Edge，将邮件批量保存为网易邮箱草稿。
+- 连接用户自行登录的 Microsoft Edge，将邮件批量保存为邮箱草稿。
 - 断点续跑、跳过已完成任务，避免重复草稿。
 - 备份并同步 XLSX 导师追踪表，严格区分“已存草稿”和“已发送”。
 - 在发布前扫描邮箱、手机号、绝对路径、会话参数和凭据痕迹。
@@ -42,14 +42,29 @@ python -m venv .venv
 .\.venv\Scripts\playwright install chromium
 ```
 
-保存网易草稿：
+保存邮箱草稿：
 
 ```powershell
-powershell -File scripts/launch_edge_cdp.ps1 -ProfileDir private/edge-profile
-.\.venv\Scripts\python -m easy_taoci.netease --drafts workspace/drafts.jsonl --state workspace/netease-state.jsonl --execute
+powershell -File scripts/launch_edge_cdp.ps1 -ProfileDir private/edge-profile -Provider netease
+.\.venv\Scripts\python -m easy_taoci.mail --provider netease --drafts workspace/drafts.jsonl --execute
+```
+
+安装后也可以使用等价命令：
+
+```powershell
+.\.venv\Scripts\easy-taoci-mail --provider netease --drafts workspace/drafts.jsonl --execute
 ```
 
 不加 `--execute` 只做本地预检。项目没有发送邮件的自动化实现。
+
+当前 provider 状态：
+
+| Provider | 邮箱 | 状态 |
+| --- | --- | --- |
+| `netease` / `163` | 网易邮箱 | 已验证草稿写入 |
+| `qq` | QQ 邮箱 | 可预检和打开登录页，写入适配待实测 |
+| `gmail` | Gmail | 可预检和打开登录页，写入适配待实测 |
+| `outlook` | Outlook 邮箱 | 可预检和打开登录页，写入适配待实测 |
 
 ## 为什么更省时间和 token
 
@@ -85,7 +100,7 @@ python -m easy_taoci.cli privacy-scan --path . --deny-file private/privacy-deny.
 ## 局限
 
 - 高校官网结构差异很大，检索阶段仍需要 Agent 浏览和人工证据判断。
-- 网易邮箱 DOM 可能更新；自动化失败时会停在当前草稿并保留状态，不能把未确认操作视为成功。
+- 各邮箱 DOM 可能更新；未验证 provider 不允许执行写入，自动化失败时会停在当前草稿并保留状态，不能把未确认操作视为成功。
 - 排名只是联系优先级，不是录取概率，也不能替代对导师近期招生情况的核实。
 
 ## 开发
@@ -95,5 +110,5 @@ python -m unittest discover -s tests -v
 python -m easy_taoci.cli privacy-scan --path .
 ```
 
-本项目采用 [MIT License](LICENSE)。欢迎提交适配其他邮箱、学校官网结构和追踪表格式的改进。
+本项目采用 [MIT License](LICENSE)。欢迎提交适配更多邮箱、学校官网结构和追踪表格式的改进。
 贡献前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。

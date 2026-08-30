@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "easy-taoci"
-version = "1.0.0"
+version = "1.1.0"
 description = "Privacy-first Chinese graduate supervisor research and outreach draft automation skill"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [{name = "Easy Taoci contributors"}]
-keywords = ["codex-skill", "graduate-admission", "email-drafts", "netease-mail"]
+keywords = ["codex-skill", "graduate-admission", "email-drafts", "webmail"]
 classifiers = [
   "Development Status :: 4 - Beta",
   "License :: OSI Approved :: MIT License",
@@ -28,6 +28,7 @@ dev = ["build>=1.2"]
 
 [project.scripts]
 easy-taoci = "easy_taoci.cli:main"
+easy-taoci-mail = "easy_taoci.mail:main"
 
 [tool.setuptools.packages.find]
 include = ["easy_taoci*"]

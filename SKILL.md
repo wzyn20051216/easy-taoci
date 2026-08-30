@@ -1,7 +1,7 @@
 ---
 name: easy-taoci
-description: Use this skill whenever a student asks to find or rank Chinese graduate supervisors, research official faculty pages, tailor 保研/推免/考研套磁邮件, create professor-outreach drafts, maintain a mentor tracking workbook, or batch-save drafts in NetEase 163 Mail. It covers evidence-based teacher research, honest student-to-supervisor matching, privacy-preserving local configuration, token-efficient batch generation, and verified draft-only browser automation. Never send email without the user's explicit per-batch authorization.
-compatibility: Python 3.10+; optional openpyxl for XLSX and Playwright for NetEase draft automation.
+description: Use this skill whenever a student asks to find or rank Chinese graduate supervisors, research official faculty pages, tailor 保研/推免/考研套磁邮件, create professor-outreach drafts, maintain a mentor tracking workbook, or batch-save drafts in NetEase, QQ Mail, Gmail, Outlook, or another webmail draft box. It covers evidence-based teacher research, honest student-to-supervisor matching, privacy-preserving local configuration, token-efficient batch generation, and draft-only browser automation. Never send email without the user's explicit per-batch authorization.
+compatibility: Python 3.10+; optional openpyxl for XLSX and Playwright for browser draft automation.
 ---
 
 # 套磁邮件定制与导师检索
@@ -104,23 +104,24 @@ python -m easy_taoci.cli draft \
 
 ## 第五阶段：保存草稿
 
-只有用户要求“写进草稿箱”时才执行浏览器自动化。先阅读 [references/netease-drafts.md](references/netease-drafts.md)。
+只有用户要求“写进草稿箱”时才执行浏览器自动化。先阅读 [references/mail-providers.md](references/mail-providers.md)。如果 provider 是 `netease` 或 `163`，再阅读 [references/netease-drafts.md](references/netease-drafts.md)。
 
 推荐流程：
 
 ```powershell
-powershell -File scripts/launch_edge_cdp.ps1 -ProfileDir private/edge-profile
-# 用户在打开的 Microsoft Edge 中自行登录网易邮箱
-python -m easy_taoci.netease \
+powershell -File scripts/launch_edge_cdp.ps1 -ProfileDir private/edge-profile -Provider netease
+# 用户在打开的 Microsoft Edge 中自行登录目标邮箱
+python -m easy_taoci.mail \
+  --provider netease \
   --drafts workspace/drafts.jsonl \
-  --state workspace/netease-state.jsonl \
   --execute
 ```
 
 关键安全规则：
 
 - 默认不加 `--execute` 时只预检，不操作邮箱。
-- 自动化代码只查找“存草稿”，不包含点击“发送”的实现。
+- 自动化代码只查找“保存草稿/关闭进入草稿”等草稿动作，不包含点击“发送”的实现。
+- `netease` / `163` 已验证写入；`qq`、`gmail`、`outlook` 先只做预检和登录页启动，写入前必须完成页面实测、选择器更新和离线测试。
 - 每封保存前核对收件人、主题、称呼、匹配段和附件；保存后等待页面确认并记录状态。
 - 只操作当前任务创建的 compose 页面；隐藏按钮不能作为可点击目标。
 - 附件需同时满足“文件名可见、上传完成、无待上传提示”。

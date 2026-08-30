@@ -9,8 +9,8 @@
     },
     {
       "id": 2,
-      "prompt": "把 candidates.csv 里 30 位老师的套磁信批量写进网易邮箱草稿箱，附件是本地简历和成绩单，中断后能接着跑。",
-      "expected_output": "先预检和让用户登录，使用稳定任务 ID 断点续跑，只保存草稿并验证附件与页面状态。",
+      "prompt": "把 candidates.csv 里 30 位老师的套磁信批量写进邮箱草稿箱，附件是本地简历和成绩单，中断后能接着跑。可能用网易、QQ、Gmail 或 Outlook。",
+      "expected_output": "先确认 provider 并预检，让用户登录受控浏览器。已验证 provider 可用稳定任务 ID 断点续跑，只保存草稿并验证附件与页面状态；未验证 provider 只能预检，不能假装写入成功。",
       "files": []
     },
     {

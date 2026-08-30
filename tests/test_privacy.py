@@ -30,7 +30,7 @@ class PrivacyTests(unittest.TestCase):
             )
             kinds = {finding.kind for finding in scan_path(root)}
             self.assertIn("中国手机号", kinds)
-            self.assertIn("网易会话参数", kinds)
+            self.assertIn("邮箱会话参数", kinds)
             self.assertIn("用户目录绝对路径", kinds)
 
     def test_private_directory_is_ignored(self) -> None:

@@ -17,6 +17,13 @@ powershell -File scripts/launch_edge_cdp.ps1 -ProfileDir private/edge-profile
 ## 预检与执行
 
 ```powershell
+python -m easy_taoci.mail --provider netease --drafts workspace/drafts.jsonl
+python -m easy_taoci.mail --provider netease --drafts workspace/drafts.jsonl --execute
+```
+
+旧入口仍可使用：
+
+```powershell
 python -m easy_taoci.netease --drafts workspace/drafts.jsonl --state workspace/netease-state.jsonl
 python -m easy_taoci.netease --drafts workspace/drafts.jsonl --state workspace/netease-state.jsonl --execute
 ```

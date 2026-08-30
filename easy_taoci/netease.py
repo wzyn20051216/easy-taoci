@@ -55,7 +55,13 @@ def saved_task_ids(state_path: Path) -> set[str]:
     return {str(item.get("task_id")) for item in read_jsonl(state_path) if item.get("status") == "saved"}
 
 
-def append_state(state_path: Path, task_id: str, status: str, error_type: str = "") -> None:
+def append_state(
+    state_path: Path,
+    task_id: str,
+    status: str,
+    error_type: str = "",
+    provider: str = "",
+) -> None:
     """追加最小化状态，不记录收件人、正文和路径。"""
     state_path.parent.mkdir(parents=True, exist_ok=True)
     record = {
@@ -65,6 +71,8 @@ def append_state(state_path: Path, task_id: str, status: str, error_type: str = 
     }
     if error_type:
         record["error_type"] = error_type
+    if provider:
+        record["provider"] = provider
     with state_path.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n")
 
@@ -256,10 +264,10 @@ def run(args: argparse.Namespace) -> int:
                 save_draft(page)
                 if screenshot_dir:
                     page.screenshot(path=str(screenshot_dir / f"{task_id}_after.png"), full_page=True)
-                append_state(state_path, task_id, "saved")
+                append_state(state_path, task_id, "saved", provider="netease")
                 print(f"[{index}/{len(pending)}] 已保存任务 {task_id}")
             except Exception as exc:
-                append_state(state_path, task_id, "failed", type(exc).__name__)
+                append_state(state_path, task_id, "failed", type(exc).__name__, provider="netease")
                 raise RuntimeError(f"任务 {task_id} 失败并已停止：{type(exc).__name__}: {exc}") from exc
     return 0
 
