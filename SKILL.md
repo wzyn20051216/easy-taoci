@@ -1,5 +1,5 @@
 ---
-name: taoci-email-tailoring
+name: easy-taoci
 description: Use this skill whenever a student asks to find or rank Chinese graduate supervisors, research official faculty pages, tailor 保研/推免/考研套磁邮件, create professor-outreach drafts, maintain a mentor tracking workbook, or batch-save drafts in NetEase 163 Mail. It covers evidence-based teacher research, honest student-to-supervisor matching, privacy-preserving local configuration, token-efficient batch generation, and verified draft-only browser automation. Never send email without the user's explicit per-batch authorization.
 compatibility: Python 3.10+; optional openpyxl for XLSX and Playwright for NetEase draft automation.
 ---
@@ -17,7 +17,7 @@ compatibility: Python 3.10+; optional openpyxl for XLSX and Playwright for NetEa
 5. 发布或共享前运行：
 
 ```powershell
-python -m taoci_email_tailoring.cli privacy-scan --path . --deny-file private/privacy-deny.txt
+python -m easy_taoci.cli privacy-scan --path . --deny-file private/privacy-deny.txt
 ```
 
 发现疑似隐私时暂停发布，逐项确认并清理历史。
@@ -28,8 +28,8 @@ python -m taoci_email_tailoring.cli privacy-scan --path . --deny-file private/pr
 在技能目录执行：
 
 ```powershell
-python -m taoci_email_tailoring.cli init --output private
-python -m taoci_email_tailoring.cli validate-profile --profile private/student_profile.json
+python -m easy_taoci.cli init --output private
+python -m easy_taoci.cli validate-profile --profile private/student_profile.json
 ```
 
 优先复用现有用户文件；不要覆盖真实模板或追踪表。字段说明见 [references/data-contracts.md](references/data-contracts.md)。
@@ -70,7 +70,7 @@ python -m taoci_email_tailoring.cli validate-profile --profile private/student_p
 运行确定性评分，让模型把时间花在边界判断而不是手工排表：
 
 ```powershell
-python -m taoci_email_tailoring.cli rank \
+python -m easy_taoci.cli rank \
   --profile private/student_profile.json \
   --candidates private/candidates.csv \
   --output workspace/ranked_candidates.csv
@@ -93,7 +93,7 @@ python -m taoci_email_tailoring.cli rank \
 将复核后的 `match_paragraph` 写入候选 CSV，再批量生成：
 
 ```powershell
-python -m taoci_email_tailoring.cli draft \
+python -m easy_taoci.cli draft \
   --profile private/student_profile.json \
   --candidates workspace/ranked_candidates.csv \
   --template private/email_template.txt \
@@ -111,7 +111,7 @@ python -m taoci_email_tailoring.cli draft \
 ```powershell
 powershell -File scripts/launch_edge_cdp.ps1 -ProfileDir private/edge-profile
 # 用户在打开的 Microsoft Edge 中自行登录网易邮箱
-python -m taoci_email_tailoring.netease \
+python -m easy_taoci.netease \
   --drafts workspace/drafts.jsonl \
   --state workspace/netease-state.jsonl \
   --execute
@@ -133,7 +133,7 @@ python -m taoci_email_tailoring.netease \
 保存成功后再更新追踪表：
 
 ```powershell
-python -m taoci_email_tailoring.cli sync-xlsx \
+python -m easy_taoci.cli sync-xlsx \
   --workbook private/mentor_tracker.xlsx \
   --drafts workspace/drafts.jsonl \
   --state workspace/netease-state.jsonl

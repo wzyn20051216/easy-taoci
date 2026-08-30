@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from taoci_email_tailoring.privacy import scan_path
+from easy_taoci.privacy import scan_path
 
 
 class PrivacyTests(unittest.TestCase):

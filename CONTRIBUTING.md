@@ -15,8 +15,8 @@
 
 ```powershell
 python -m unittest discover -s tests -v
-python -m taoci_email_tailoring.cli privacy-scan --path .
-python -m compileall -q taoci_email_tailoring tests
+python -m easy_taoci.cli privacy-scan --path .
+python -m compileall -q easy_taoci tests
 ```
 
 新增功能应带离线测试。浏览器测试若无法在 CI 中运行，至少测试输入预检、状态恢复、选择器辅助逻辑和日志最小化。

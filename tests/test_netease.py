@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from taoci_email_tailoring.netease import append_state, saved_task_ids, text_to_html, validate_drafts
+from easy_taoci.netease import append_state, saved_task_ids, text_to_html, validate_drafts
 
 
 class NetEaseTests(unittest.TestCase):

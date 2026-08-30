@@ -11,8 +11,8 @@ try:
 except ImportError:  # pragma: no cover - 可选依赖缺失时跳过
     openpyxl = None
 
-from taoci_email_tailoring.core import write_jsonl
-from taoci_email_tailoring.workbook import sync_workbook
+from easy_taoci.core import write_jsonl
+from easy_taoci.workbook import sync_workbook
 
 
 @unittest.skipIf(openpyxl is None, "未安装 openpyxl")

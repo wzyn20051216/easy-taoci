@@ -1,4 +1,4 @@
-# Taoci Email Tailoring
+# Easy Taoci
 
 一个面向中文保研、推免、考研联系导师场景的开源 Codex/Agent Skill。它把导师官网检索、证据化匹配、套磁信定制、网易邮箱草稿保存和导师追踪表同步组合成一条可复核、可断点续跑的流水线。
 
@@ -19,20 +19,20 @@
 需要 Python 3.10 或更高版本。
 
 ```powershell
-git clone https://github.com/<your-github-name>/taoci-email-tailoring.git
-cd taoci-email-tailoring
+git clone https://github.com/<your-github-name>/easy-taoci.git
+cd easy-taoci
 python -m venv .venv
 .\.venv\Scripts\python -m pip install --upgrade pip setuptools
 .\.venv\Scripts\python -m pip install -e .
-.\.venv\Scripts\python -m taoci_email_tailoring.cli init --output private
+.\.venv\Scripts\python -m easy_taoci.cli init --output private
 ```
 
 编辑 `private/student_profile.json`、`private/email_template.txt`、`private/candidates.csv` 和 `private/privacy-deny.txt`。这些目录已被 Git 忽略。
 
 ```powershell
-.\.venv\Scripts\python -m taoci_email_tailoring.cli validate-profile --profile private/student_profile.json
-.\.venv\Scripts\python -m taoci_email_tailoring.cli rank --profile private/student_profile.json --candidates private/candidates.csv --output workspace/ranked_candidates.csv
-.\.venv\Scripts\python -m taoci_email_tailoring.cli draft --profile private/student_profile.json --candidates workspace/ranked_candidates.csv --template private/email_template.txt --output workspace/drafts.jsonl
+.\.venv\Scripts\python -m easy_taoci.cli validate-profile --profile private/student_profile.json
+.\.venv\Scripts\python -m easy_taoci.cli rank --profile private/student_profile.json --candidates private/candidates.csv --output workspace/ranked_candidates.csv
+.\.venv\Scripts\python -m easy_taoci.cli draft --profile private/student_profile.json --candidates workspace/ranked_candidates.csv --template private/email_template.txt --output workspace/drafts.jsonl
 ```
 
 安装可选功能：
@@ -46,7 +46,7 @@ python -m venv .venv
 
 ```powershell
 powershell -File scripts/launch_edge_cdp.ps1 -ProfileDir private/edge-profile
-.\.venv\Scripts\python -m taoci_email_tailoring.netease --drafts workspace/drafts.jsonl --state workspace/netease-state.jsonl --execute
+.\.venv\Scripts\python -m easy_taoci.netease --drafts workspace/drafts.jsonl --state workspace/netease-state.jsonl --execute
 ```
 
 不加 `--execute` 只做本地预检。项目没有发送邮件的自动化实现。
@@ -71,7 +71,7 @@ powershell -File scripts/launch_edge_cdp.ps1 -ProfileDir private/edge-profile
 提交前执行：
 
 ```powershell
-python -m taoci_email_tailoring.cli privacy-scan --path . --deny-file private/privacy-deny.txt
+python -m easy_taoci.cli privacy-scan --path . --deny-file private/privacy-deny.txt
 ```
 
 详细原则见 [PRIVACY.md](PRIVACY.md)。
@@ -92,7 +92,7 @@ python -m taoci_email_tailoring.cli privacy-scan --path . --deny-file private/pr
 
 ```powershell
 python -m unittest discover -s tests -v
-python -m taoci_email_tailoring.cli privacy-scan --path .
+python -m easy_taoci.cli privacy-scan --path .
 ```
 
 本项目采用 [MIT License](LICENSE)。欢迎提交适配其他邮箱、学校官网结构和追踪表格式的改进。

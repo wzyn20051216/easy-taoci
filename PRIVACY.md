@@ -20,7 +20,7 @@
 4. 若敏感信息曾经提交，不要只在新提交中删除；应先停止发布并清理整个 Git 历史，再轮换可能泄露的凭据。
 
 ```powershell
-python -m taoci_email_tailoring.cli privacy-scan --path . --deny-file private/privacy-deny.txt
+python -m easy_taoci.cli privacy-scan --path . --deny-file private/privacy-deny.txt
 git grep -n -I -E "sid=|cookie|token|password|验证码"
 ```
 

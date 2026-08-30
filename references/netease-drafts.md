@@ -17,8 +17,8 @@ powershell -File scripts/launch_edge_cdp.ps1 -ProfileDir private/edge-profile
 ## 预检与执行
 
 ```powershell
-python -m taoci_email_tailoring.netease --drafts workspace/drafts.jsonl --state workspace/netease-state.jsonl
-python -m taoci_email_tailoring.netease --drafts workspace/drafts.jsonl --state workspace/netease-state.jsonl --execute
+python -m easy_taoci.netease --drafts workspace/drafts.jsonl --state workspace/netease-state.jsonl
+python -m easy_taoci.netease --drafts workspace/drafts.jsonl --state workspace/netease-state.jsonl --execute
 ```
 
 预检确认草稿文件、附件、任务 ID 和浏览器连接参数。执行模式只处理状态文件中尚未成功的任务。

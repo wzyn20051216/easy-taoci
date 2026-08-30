@@ -7,7 +7,7 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from taoci_email_tailoring.core import (
+from easy_taoci.core import (
     ValidationError,
     build_drafts,
     score_candidate,

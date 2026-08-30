@@ -3,13 +3,13 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "taoci-email-tailoring"
+name = "easy-taoci"
 version = "1.0.0"
 description = "Privacy-first Chinese graduate supervisor research and outreach draft automation skill"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
-authors = [{name = "Taoci Email Tailoring contributors"}]
+authors = [{name = "Easy Taoci contributors"}]
 keywords = ["codex-skill", "graduate-admission", "email-drafts", "netease-mail"]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -27,7 +27,7 @@ browser = ["playwright>=1.45"]
 dev = ["build>=1.2"]
 
 [project.scripts]
-taoci = "taoci_email_tailoring.cli:main"
+easy-taoci = "easy_taoci.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["taoci_email_tailoring*"]
+include = ["easy_taoci*"]
