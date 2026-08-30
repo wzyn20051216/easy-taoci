@@ -1,0 +1,18 @@
+[
+  {"query":"帮我从华东几所学校的自动化学院官网找硕导，按我简历里的嵌入式和机器人项目匹配后写保研套磁信。","should_trigger":true},
+  {"query":"我有一个导师名单 csv，想批量生成推免联系邮件并存进 163 邮箱草稿箱，不要发送。","should_trigger":true},
+  {"query":"老师主页都在这些链接里，帮我核验邮箱、研究方向和今年是否招生，再给联系优先级。","should_trigger":true},
+  {"query":"套磁信别整封重写，只根据每个导师的方向改称呼和最后两三句。","should_trigger":true},
+  {"query":"把已保存的导师草稿同步到 Excel，草稿和已发送必须分开标记。","should_trigger":true},
+  {"query":"网易邮箱里有 40 封导师邮件要存草稿，附件一样，昨天做到一半今天接着跑。","should_trigger":true},
+  {"query":"我想给考研导师发自荐邮件，但不知道怎么从学院官网筛选真正匹配的老师。","should_trigger":true},
+  {"query":"检查我的导师推荐表，去掉已经联系过的人，用官网来源补齐剩余人的邮箱。","should_trigger":true},
+  {"query":"帮我写一封给公司 HR 的实习求职邮件。","should_trigger":false},
+  {"query":"把这份英文 cold email 翻译成中文，收件人是海外客户。","should_trigger":false},
+  {"query":"请润色我的完整个人陈述和研究计划，控制在 1500 字。","should_trigger":false},
+  {"query":"帮我登录 163 邮箱，把收件箱里的广告邮件全部删除。","should_trigger":false},
+  {"query":"我已经拿到导师回复，帮我分析应该怎么礼貌回复这封邮件。","should_trigger":false},
+  {"query":"请整理高校教师的公开邮箱用于市场推广群发。","should_trigger":false},
+  {"query":"给我的论文通讯作者写 cover letter 并直接发送给期刊编辑。","should_trigger":false},
+  {"query":"把学院官网的新闻列表抓下来做一个数据集。","should_trigger":false}
+]

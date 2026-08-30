@@ -1,0 +1,35 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+dist/
+build/
+.venv/
+venv/
+
+# 所有真实个人资料与运行产物
+private/
+workspace/
+local/
+output/
+*.local.json
+*.local.toml
+.env
+.env.*
+
+# 浏览器、附件、表格、截图与日志
+edge-profile/
+playwright-profile/
+*.pdf
+*.docx
+*.xlsx
+*.xls
+*.png
+*.jpg
+*.jpeg
+*.log
+*.jsonl
+
+# 允许仓库内的测试夹具
+!tests/fixtures/*.jsonl

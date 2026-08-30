@@ -1,0 +1,14 @@
+{{salutation}}
+
+您好！
+
+我是{{undergraduate_university}}{{major}}专业的{{name}}，计划申请{{application_year}}年研究生项目。这里填写经过本人核验的学业、科研与项目主体内容。
+
+{{match_paragraph}}
+
+随信附上个人简历和成绩单，感谢您在百忙之中阅读。期待您的回复！
+
+此致
+敬礼！
+
+{{name}}

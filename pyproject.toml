@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "taoci-email-tailoring"
+version = "1.0.0"
+description = "Privacy-first Chinese graduate supervisor research and outreach draft automation skill"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Taoci Email Tailoring contributors"}]
+keywords = ["codex-skill", "graduate-admission", "email-drafts", "netease-mail"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = []
+
+[project.optional-dependencies]
+xlsx = ["openpyxl>=3.1"]
+browser = ["playwright>=1.45"]
+dev = ["build>=1.2"]
+
+[project.scripts]
+taoci = "taoci_email_tailoring.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["taoci_email_tailoring*"]

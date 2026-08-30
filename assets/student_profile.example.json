@@ -1,0 +1,33 @@
+{
+  "student": {
+    "name": "示例同学",
+    "undergraduate_university": "海川大学",
+    "major": "电子信息工程",
+    "application_year": "2027"
+  },
+  "subject_template": "【{application_year}推免自荐】-{undergraduate_university}-{major}-{name}",
+  "experiences": [
+    {
+      "id": "embedded-system",
+      "title": "嵌入式系统课程项目",
+      "tags": ["embedded", "iot", "sensor"],
+      "evidence": "完成了微控制器、多传感器采集与实时任务调度的系统联调。"
+    },
+    {
+      "id": "vision-research",
+      "title": "计算机视觉科研训练",
+      "tags": ["computer-vision", "object-detection", "edge-ai"],
+      "evidence": "参与目标检测模型的数据处理、对比实验和结果可视化。"
+    },
+    {
+      "id": "communication-contest",
+      "title": "通信系统竞赛",
+      "tags": ["communication", "wireless", "signal-processing"],
+      "evidence": "完成通信系统基础训练和团队赛题实现。"
+    }
+  ],
+  "attachments": [
+    "./private/resume.pdf",
+    "./private/transcript.pdf"
+  ]
+}
