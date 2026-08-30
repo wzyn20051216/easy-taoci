@@ -1,2 +1,2 @@
-university,college,name,title,research_focus,research_tags,email,team,faculty_url,admission_url,admission_status,source_checked_at,match_evidence_ids,match_paragraph,research_notes,contact_status
-海川大学,信息学院,陈示例,副教授,智能感知与边缘计算,computer-vision;edge-ai,teacher@example.edu,智能感知实验室,https://faculty.example.edu/teacher,,unknown,2026-08-01,vision-research,我关注到您在智能感知与边缘计算方面的研究。结合我在目标检测数据处理、对比实验和结果可视化中的积累，我希望进一步学习面向边缘设备的视觉算法与系统实现。,示例数据请替换,new
+university,college,name,title,research_focus,research_tags,email,team,faculty_url,official_domains,admission_url,admission_status,source_checked_at,match_evidence_ids,match_paragraph,research_notes,contact_status
+海川大学,信息学院,陈示例,副教授,智能感知与边缘计算,computer-vision;edge-ai,teacher@example.edu,智能感知实验室,https://faculty.example.edu/teacher,,,unknown,2026-08-01,vision-research,我关注到您在智能感知与边缘计算方面的研究。结合我在目标检测数据处理、对比实验和结果可视化中的积累，我希望进一步学习面向边缘设备的视觉算法与系统实现。,示例数据请替换,new

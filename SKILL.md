@@ -17,10 +17,11 @@ compatibility: Python 3.10+; optional openpyxl for XLSX and Playwright for NetEa
 5. 发布或共享前运行：
 
 ```powershell
-python -m taoci_email_tailoring.cli privacy-scan --path .
+python -m taoci_email_tailoring.cli privacy-scan --path . --deny-file private/privacy-deny.txt
 ```
 
 发现疑似隐私时暂停发布，逐项确认并清理历史。
+`privacy-deny.txt` 每行写一个只属于当前用户的敏感片段，如姓名、邮箱账号、旧目录名或项目代号；该文件保留在本地。
 
 ## 启动方式
 

@@ -37,6 +37,7 @@ def cmd_init(args: argparse.Namespace) -> int:
         "student_profile.example.json": "student_profile.json",
         "candidates.example.csv": "candidates.csv",
         "email_template.example.txt": "email_template.txt",
+        "privacy-deny.example.txt": "privacy-deny.txt",
     }
     for source_name, target_name in mapping.items():
         target = output / target_name
@@ -99,7 +100,17 @@ def cmd_draft(args: argparse.Namespace) -> int:
 def cmd_privacy_scan(args: argparse.Namespace) -> int:
     """扫描准备公开的目录并以退出码标记风险。"""
     root = Path(args.path).resolve()
-    findings = scan_path(root)
+    deny_terms = list(args.deny_term or [])
+    if args.deny_file:
+        deny_path = Path(args.deny_file)
+        if not deny_path.is_file():
+            raise FileNotFoundError(f"隐私禁词文件不存在：{deny_path}")
+        deny_terms.extend(
+            line.strip()
+            for line in deny_path.read_text(encoding="utf-8-sig").splitlines()
+            if line.strip() and not line.lstrip().startswith("#")
+        )
+    findings = scan_path(root, tuple(dict.fromkeys(deny_terms)))
     if not findings:
         print(f"隐私扫描通过：{root}")
         return 0
@@ -147,6 +158,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     scan_parser = subparsers.add_parser("privacy-scan", help="扫描疑似隐私与凭据")
     scan_parser.add_argument("--path", default=".")
+    scan_parser.add_argument("--deny-term", action="append", help="额外禁止出现的敏感片段，可重复")
+    scan_parser.add_argument("--deny-file", help="每行一个敏感片段的本地文件")
     scan_parser.set_defaults(func=cmd_privacy_scan)
 
     xlsx_parser = subparsers.add_parser("sync-xlsx", help="同步 XLSX 导师追踪表")

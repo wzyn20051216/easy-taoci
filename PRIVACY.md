@@ -20,8 +20,10 @@
 4. 若敏感信息曾经提交，不要只在新提交中删除；应先停止发布并清理整个 Git 历史，再轮换可能泄露的凭据。
 
 ```powershell
-python -m taoci_email_tailoring.cli privacy-scan --path .
+python -m taoci_email_tailoring.cli privacy-scan --path . --deny-file private/privacy-deny.txt
 git grep -n -I -E "sid=|cookie|token|password|验证码"
 ```
+
+`private/privacy-deny.txt` 每行填写一个当前用户专属敏感片段。建议包含姓名、邮箱用户名、手机号、旧工作区目录名和不应公开的项目代号。扫描器也会检查被跟踪文件的路径名。
 
 扫描器只是一道防线，不能替代人工审查。

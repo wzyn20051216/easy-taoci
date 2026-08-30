@@ -77,6 +77,13 @@ class CoreTests(unittest.TestCase):
         ranked = score_candidate(candidate, sample_profile(), today=date(2026, 8, 30))
         self.assertEqual("0", ranked["match_score"])
 
+    def test_verified_custom_official_domain_is_supported(self) -> None:
+        candidate = sample_candidate()
+        candidate["faculty_url"] = "https://faculty.research-example.org.cn/teacher"
+        candidate["official_domains"] = "research-example.org.cn"
+        ranked = score_candidate(candidate, sample_profile(), today=date(2026, 8, 30))
+        self.assertIn("官方来源", ranked["score_reasons"])
+
     def test_build_draft_is_stable_and_uses_primary_email(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             attachment = Path(temp_dir) / "resume.pdf"

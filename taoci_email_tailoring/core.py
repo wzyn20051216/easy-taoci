@@ -139,7 +139,7 @@ def primary_email(value: str) -> str:
     return ""
 
 
-def is_official_faculty_source(url: str) -> bool:
+def is_official_faculty_source(url: str, allowed_domains: Iterable[str] = ()) -> bool:
     """保守判断 URL 是否像高校官方来源。"""
     parsed = urlparse(url)
     host = (parsed.hostname or "").lower()
@@ -148,7 +148,9 @@ def is_official_faculty_source(url: str) -> bool:
     blocked = ("baidu.com", "bing.com", "google.com", "zhihu.com", "sohu.com")
     if any(host == domain or host.endswith("." + domain) for domain in blocked):
         return False
-    return host.endswith(".edu.cn") or host.endswith(".edu") or host.endswith(".ac.cn")
+    normalized_allowed = {domain.strip().lower().lstrip(".") for domain in allowed_domains if domain.strip()}
+    allowed = any(host == domain or host.endswith("." + domain) for domain in normalized_allowed)
+    return allowed or host.endswith(".edu.cn") or host.endswith(".edu") or host.endswith(".ac.cn")
 
 
 def source_freshness(value: str, today: date | None = None) -> tuple[int, str]:
@@ -179,7 +181,8 @@ def score_candidate(row: dict[str, str], profile: dict[str, Any], today: date | 
     admission = row.get("admission_status", "unknown").lower()
     admission_score = {"confirmed": 20, "likely": 12, "unknown": 4, "not_recruiting": 0}.get(admission, 4)
 
-    official = is_official_faculty_source(row.get("faculty_url", ""))
+    official_domains = normalize_tags(row.get("official_domains", ""))
+    official = is_official_faculty_source(row.get("faculty_url", ""), official_domains)
     source_score = 10 if official else 0
     freshness_score, freshness_reason = source_freshness(row.get("source_checked_at", ""), today)
     contact_score = 10 if primary_email(row.get("email", "")) else 0
@@ -248,7 +251,8 @@ def validate_candidate(row: dict[str, str], profile: dict[str, Any], row_number:
             errors.append(f"第 {row_number} 行缺少 {field}")
     if not primary_email(row.get("email", "")):
         errors.append(f"第 {row_number} 行没有有效主邮箱")
-    if not is_official_faculty_source(row.get("faculty_url", "")):
+    official_domains = normalize_tags(row.get("official_domains", ""))
+    if not is_official_faculty_source(row.get("faculty_url", ""), official_domains):
         errors.append(f"第 {row_number} 行 faculty_url 不是可识别的高校官方来源")
 
     evidence = profile_evidence(profile)

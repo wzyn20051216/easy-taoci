@@ -17,6 +17,7 @@ output/
 *.local.toml
 .env
 .env.*
+.privacy-deny*
 
 # 浏览器、附件、表格、截图与日志
 edge-profile/

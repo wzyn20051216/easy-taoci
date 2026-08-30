@@ -41,6 +41,15 @@ class PrivacyTests(unittest.TestCase):
             (private / "profile.txt").write_text("138" + "1234" + "5678", encoding="utf-8")
             self.assertEqual([], scan_path(root))
 
+    def test_custom_deny_term_checks_content_and_filename(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            (root / "private-alias-notes.txt").write_text("公开内容含 private-alias", encoding="utf-8")
+            findings = scan_path(root, ("private-alias",))
+            kinds = {finding.kind for finding in findings}
+            self.assertIn("用户自定义禁词（文件名）", kinds)
+            self.assertIn("用户自定义禁词", kinds)
+
 
 if __name__ == "__main__":
     unittest.main()

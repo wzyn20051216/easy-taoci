@@ -27,7 +27,7 @@ python -m venv .venv
 .\.venv\Scripts\python -m taoci_email_tailoring.cli init --output private
 ```
 
-编辑 `private/student_profile.json`、`private/email_template.txt` 和 `private/candidates.csv`。这些目录已被 Git 忽略。
+编辑 `private/student_profile.json`、`private/email_template.txt`、`private/candidates.csv` 和 `private/privacy-deny.txt`。这些目录已被 Git 忽略。
 
 ```powershell
 .\.venv\Scripts\python -m taoci_email_tailoring.cli validate-profile --profile private/student_profile.json
@@ -71,7 +71,7 @@ powershell -File scripts/launch_edge_cdp.ps1 -ProfileDir private/edge-profile
 提交前执行：
 
 ```powershell
-python -m taoci_email_tailoring.cli privacy-scan --path .
+python -m taoci_email_tailoring.cli privacy-scan --path . --deny-file private/privacy-deny.txt
 ```
 
 详细原则见 [PRIVACY.md](PRIVACY.md)。

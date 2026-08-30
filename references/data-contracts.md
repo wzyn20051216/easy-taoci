@@ -42,7 +42,9 @@
 | match_evidence_ids | 用 `;` 分隔的学生经历 ID |
 | match_paragraph | 2-3 句个性化匹配段 |
 
-推荐列：`title`、`team`、`admission_url`、`admission_status`、`research_notes`、`contact_status`。
+推荐列：`title`、`team`、`admission_url`、`admission_status`、`research_notes`、`contact_status`、`official_domains`。
+
+`official_domains` 用 `;` 分隔经人工核验的官网域名，适用于不使用 `.edu.cn` / `.ac.cn` 的高校、研究院或实验室。不要为了让校验通过而填写聚合站域名。
 
 `admission_status` 建议值：`confirmed`、`likely`、`unknown`、`not_recruiting`。只有近期官方材料明确表述时使用 `confirmed`。
 

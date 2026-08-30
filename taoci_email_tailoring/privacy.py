@@ -40,7 +40,7 @@ def _allowed_email(value: str) -> bool:
     return domain in {"example.com", "example.org", "example.net", "example.edu"} or domain.endswith(".example.edu")
 
 
-def scan_path(root: Path) -> list[Finding]:
+def scan_path(root: Path, deny_terms: tuple[str, ...] = ()) -> list[Finding]:
     """扫描仓库文本文件中的常见隐私和会话痕迹。"""
     findings: list[Finding] = []
     for path in sorted(root.rglob("*")):
@@ -48,11 +48,21 @@ def scan_path(root: Path) -> list[Finding]:
             continue
         if any(part in EXCLUDED_DIRS or part.endswith(".egg-info") for part in path.relative_to(root).parts):
             continue
+        relative_path = path.relative_to(root)
+        for term in deny_terms:
+            if term and term.casefold() in str(relative_path).casefold():
+                findings.append(Finding(relative_path, 0, "用户自定义禁词（文件名）", str(relative_path)))
         try:
             lines = path.read_text(encoding="utf-8").splitlines()
         except UnicodeDecodeError:
             continue
         for line_number, line in enumerate(lines, start=1):
+            for term in deny_terms:
+                if term and term.casefold() in line.casefold():
+                    preview = line.strip()
+                    if len(preview) > 160:
+                        preview = preview[:157] + "..."
+                    findings.append(Finding(relative_path, line_number, "用户自定义禁词", preview))
             for kind, pattern in PATTERNS.items():
                 for match in pattern.finditer(line):
                     value = match.group(0)
@@ -61,5 +71,5 @@ def scan_path(root: Path) -> list[Finding]:
                     preview = line.strip()
                     if len(preview) > 160:
                         preview = preview[:157] + "..."
-                    findings.append(Finding(path.relative_to(root), line_number, kind, preview))
+                    findings.append(Finding(relative_path, line_number, kind, preview))
     return findings
